@@ -1,8 +1,11 @@
 document.getElementById("btn").addEventListener("click", async () => {
-    const res = await fetch("http://localhost:5000/api/button-clicked", {
-      method: "POST"
-    });
-    const data = await res.json();
-    document.getElementById("response").textContent = data.message;
+    try {
+      const res = await fetch("http://localhost:5000/helloworld");
+      const data = await res.json();
+      document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+      document.getElementById("output").textContent = "Error fetching data.";
+      console.error(err);
+    }
   });
   
