@@ -2,17 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Button PoC</title>
+    <title>Flow List</title>
   </head>
   <body>
-    <div id="app">
-      <button id="btn">Get Hello World</button>
-      <pre id="output"></pre>
-      <hr />
-      <button id="graph-btn">Render Graph</button>
-      <div id="graph-output"></div>
-    </div>
-    <script type="module" src="/src/main.js"></script>
+    <h1>All Flows</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Flow</th>
+          <th>Status</th>
+          <th>Run Time</th>
+          <th>Finished</th>
+          <th>Failed</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="flow-table-body"></tbody>
+    </table>
+
+    <div id="tasks-output"></div>
+    <div id="graph-output"></div>
+
+    <script type="module" src="/src/flows.js"></script>
   </body>
 </html>
