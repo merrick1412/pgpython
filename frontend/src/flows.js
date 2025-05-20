@@ -1,4 +1,7 @@
-import { render } from "@viz-js/viz";
+import Viz from 'viz.js';
+import { Module, render } from 'viz.js/full.render.js';
+
+const viz = new Viz({ Module, render });
 
 async function loadFlows() {
   const res = await fetch("/api/flows");
