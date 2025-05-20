@@ -3,16 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Button PoC</title>
+    <title>Starting Page</title>
   </head>
   <body>
-    <div id="app">
-      <button id="btn">Get Hello World</button>
-      <pre id="output"></pre>
-      <hr />
-      <button id="graph-btn">Render Graph</button>
-      <div id="graph-output"></div>
+    <div id="start">
+      <h1>Welcome to the PGFlow</h1>
+      <p>Click the button below to proceed to the flows page.</p>
+      <button id="start-btn" onclick="navigateToMain()">Go to Main Page</button>
     </div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      function navigateToMain() {
+        window.location.href = "viewFlows.html";
+      }
+    </script>
   </body>
 </html>
