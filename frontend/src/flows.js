@@ -73,7 +73,7 @@ async function showGraph(flowId) {
   const res = await fetch(`/api/flows/${flowId}/graph`);
   const dot = await res.text();
 
-  const svg = await render(dot, { format: "svg" });
+  const svg = await viz.renderString(dot);
 
   const container = document.getElementById("graph-output");
   container.innerHTML = `<h2>Graph for Flow ${flowId}</h2>${svg}`;
