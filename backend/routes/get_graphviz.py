@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from backend.db import get_db_connection
-bp = Blueprint('gettasks', __name__)
+bp = Blueprint('get_graphviz', __name__)
 
 @bp.route('/api/flows/<int:flow_id>/graph', methods=['GET'])
 def get_graphviz(flow_id):

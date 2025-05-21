@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from backend.db import get_db_connection
-bp = Blueprint('gettasks', __name__)
+bp = Blueprint('get_tasks', __name__)
 
 @bp.route('/api/flows/<int:flow_id>/tasks', methods=['GET'])
 def get_tasks(flow_id):
