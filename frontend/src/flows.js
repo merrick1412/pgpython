@@ -98,12 +98,20 @@ async function loadRunningFlows() {
   });
 }
 
-// Call this after page load
-loadRunningFlows().catch(err => console.error("Error loading running flows:", err));
+// Only call loadRunningFlows if the table exists
+if (document.getElementById("running-flow-table-body")) {
+  loadRunningFlows().catch(err => console.error("Error loading running flows:", err));
+}
 
-// Add refresh button event
-document.getElementById("refresh-running-flows").addEventListener("click", () => {
-  loadRunningFlows();
-});
+// Only add refresh event if the button exists
+const refreshBtn = document.getElementById("refresh-running-flows");
+if (refreshBtn) {
+  refreshBtn.addEventListener("click", () => {
+    loadRunningFlows();
+  });
+}
 
-loadFlows().catch(err => console.error("Error loading flows:", err));
+// Only call loadFlows if the table exists
+if (document.getElementById("flow-table-body")) {
+  loadFlows().catch(err => console.error("Error loading flows:", err));
+}
