@@ -9,12 +9,18 @@
     <div id="start">
       <h1>Welcome to the PGFlow</h1>
       <p>Click the button below to proceed to the flows page.</p>
-      <button id="start-btn" onclick="navigateToMain()">Go to Main Page</button>
+      <button id="start-btn" onclick="navigateToMain()">View Flows</button>
+      <button id="createFlow-btn" onclick="navigateToCreate()">Create Flows</button>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script>
       function navigateToMain() {
         window.location.href = "viewFlows.html";
+      }
+    </script>
+    <script>
+      function navigateToCreate() {
+        window.location.href = "createFlows.html";
       }
     </script>
   </body>

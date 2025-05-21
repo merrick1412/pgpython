@@ -11,35 +11,33 @@ async function loadFlows() {
   tbody.innerHTML = "";
 
   data.forEach(flow => {
-    const row = document.createElement("tr");
+  const row = document.createElement("tr");
 
-    row.innerHTML = `
-      <td>${flow.flow_id}</td>
-      <td>${flow.flow}</td>
-      <td>${flow.complete}</td>
-      <td>${flow.run_time}</td>
-      <td>${flow.count_finished_nodes}</td>
-      <td>${flow.count_failed_nodes}</td>
-      <td>
-        <button data-id="${flow.flow_id}" class="task-btn">Tasks</button>
-        <button data-id="${flow.flow_id}" class="graph-btn">Graph</button>
-      </td>
-    `;
+  row.innerHTML = `
+    <td>${flow.flow_id}</td>
+    <td>${flow.flow}</td>
+    <td>${flow.complete}</td>
+    <td>${flow.run_time}</td>
+    <td>${flow.count_finished_nodes}</td>
+    <td>${flow.count_failed_nodes}</td>
+    <td>
+      <button data-id="${flow.flow_id}" class="details-btn">Details</button>
+    </td>
+  `;
 
-    tbody.appendChild(row);
-  });
+  tbody.appendChild(row);
+});
 
-  // Add event listeners
-  document.querySelectorAll(".task-btn").forEach(button =>
-    button.addEventListener("click", e => showTasks(e.target.dataset.id))
-  );
-
-  document.querySelectorAll(".graph-btn").forEach(button =>
-    button.addEventListener("click", e => showGraph(e.target.dataset.id))
-  );
+// Add event listeners
+document.querySelectorAll(".details-btn").forEach(button =>
+  button.addEventListener("click", e => {
+    const flowId = e.target.dataset.id;
+    window.location.href = `flowDetails.html?flow_id=${flowId}`;
+  })
+);
 }
 
-async function showTasks(flowId) {
+export async function showTasks(flowId) {
   const res = await fetch(`/api/flows/${flowId}/tasks`);
   const tasks = await res.json();
 
@@ -69,7 +67,7 @@ async function showTasks(flowId) {
   container.appendChild(table);
 }
 
-async function showGraph(flowId) {
+export async function showGraph(flowId) {
   const res = await fetch(`/api/flows/${flowId}/graph`);
   const dot = await res.text();
 

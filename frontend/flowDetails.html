@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flow Details</title>
+  <script type="module">
+    import { showTasks, showGraph } from './src/flows.js';
+
+    // Get flow_id from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const flowId = urlParams.get('flow_id');
+
+    if (flowId) {
+      showTasks(flowId).catch(err => {
+        document.getElementById("tasks-output").innerHTML = `<p>Error loading tasks: ${err}</p>`;
+      });
+      showGraph(flowId).catch(err => {
+        document.getElementById("graph-output").innerHTML = `<p>Error loading graph: ${err}</p>`;
+      });
+    } else {
+      document.body.innerHTML = "<p>No flow_id provided in URL.</p>";
+    }
+  </script>
+</head>
+<body>
+  <h1>Flow Details</h1>
+  <div id="tasks-output"></div>
+  <div id="graph-output"></div>
+</body>
+</html>
