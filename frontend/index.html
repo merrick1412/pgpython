@@ -4,13 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Starting Page</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+      }
+      #start {
+        text-align: center;
+        background: white;
+        padding: 40px 32px;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      }
+      button {
+        margin: 8px;
+      }
+    </style>
   </head>
   <body>
     <div id="start">
-      <h1>Welcome to the PGFlow</h1>
-      <p>Click the button below to proceed to the flows page.</p>
-      <button id="start-btn" onclick="navigateToMain()">View Flows</button>
-      <button id="createFlow-btn" onclick="navigateToCreate()">Create Flows</button>
+      <h1>Welcome to PGFlow</h1>
+      <p>Click the button belows to proceed.</p>
+      <button id="start-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToMain()">View Flows</button>
+      <button id="createFlow-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToCreate()">Create Flows</button>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script>

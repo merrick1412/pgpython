@@ -22,9 +22,14 @@
         padding: 10px;
       }
     </style>
-
+<script type="module">
+    document.getElementById("back-btn").addEventListener("click", () => {
+        window.history.back();
+    });
+    </script>
   </head>
   <body>
+    <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
     <h1>All Flows</h1>
     <table border="1">
       <thead>
@@ -41,7 +46,7 @@
       <tbody id="flow-table-body"></tbody>
     </table>
     <h1>Running Flows</h1>
-<button id="refresh-running-flows">Refresh Running Flows</button>
+<button id="refresh-running-flows" style="border-radius: 6px; padding: 5px 16px;">Refresh</button>
 <table border="1">
   <thead>
     <tr>

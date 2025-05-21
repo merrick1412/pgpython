@@ -21,7 +21,7 @@ async function loadFlows() {
     <td>${flow.count_finished_nodes}</td>
     <td>${flow.count_failed_nodes}</td>
     <td>
-      <button data-id="${flow.flow_id}" class="details-btn">Details</button>
+      <button data-id="${flow.flow_id}" class="details-btn" style="border-radius: 6px; padding: 5px 16px;">Details</button>
     </td>
   `;
 
