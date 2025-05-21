@@ -77,4 +77,33 @@ export async function showGraph(flowId) {
   container.innerHTML = `<h2>Graph for Flow ${flowId}</h2>${svg}`;
 }
 
+async function loadRunningFlows() {
+  const res = await fetch("/api/flows/running");
+  const data = await res.json();
+
+  const tbody = document.getElementById("running-flow-table-body");
+  tbody.innerHTML = "";
+
+  data.forEach(flow => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${flow.flow_id}</td>
+      <td>${flow.flow}</td>
+      <td>${flow.complete}</td>
+      <td>${flow.run_time}</td>
+      <td>${flow.count_finished_nodes}</td>
+      <td>${flow.count_failed_nodes}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// Call this after page load
+loadRunningFlows().catch(err => console.error("Error loading running flows:", err));
+
+// Add refresh button event
+document.getElementById("refresh-running-flows").addEventListener("click", () => {
+  loadRunningFlows();
+});
+
 loadFlows().catch(err => console.error("Error loading flows:", err));
