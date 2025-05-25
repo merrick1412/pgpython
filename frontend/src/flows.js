@@ -14,6 +14,24 @@ function createGrid(containerId, data, columns) {
     autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns
   };
 
+  setTimeout(() => {
+  document.querySelectorAll(".cancel-btn").forEach(button =>
+    button.addEventListener("click", async e => {
+      const flowId = e.target.dataset.id;
+      if (confirm("Cancel flow " + flowId + "?")) {
+        const resp = await fetch(`/api/flows/${flowId}/cancel`, { method: "POST" });
+        if (resp.ok) {
+          alert("Flow cancelled.");
+          loadRunningFlows();
+        } else {
+          alert("Failed to cancel flow.");
+        }
+      }
+    })
+  );
+}, 100);
+  
+
   const dataView = new window.Slick.Data.DataView();
   const grid = new Slick.Grid(containerId, dataView, columns, options);
 
@@ -95,6 +113,7 @@ async function loadFlows() {
   }, 100);
 }
 
+/*
 export async function showTasks(flowId) {
   const res = await fetch(`/api/flows/${flowId}/tasks`);
   const tasks = await res.json();
@@ -121,9 +140,11 @@ export async function showTasks(flowId) {
         </tr>`).join("")}
     </tbody>
   `;
+  
 
   container.appendChild(table);
 }
+  */
 
 export async function showGraph(flowId) {
   const res = await fetch(`/api/flows/${flowId}/graph`);
@@ -150,7 +171,16 @@ async function loadRunningFlows() {
     { id: "complete", name: "Status", field: "complete", width: 80 },
     { id: "run_time", name: "Run Time", field: "run_time" },
     { id: "count_finished_nodes", name: "Finished", field: "count_finished_nodes", width: 80 },
-    { id: "count_failed_nodes", name: "Failed", field: "count_failed_nodes", width: 80 }
+    { id: "count_failed_nodes", name: "Failed", field: "count_failed_nodes", width: 80 },
+    {
+    id: "actions",
+    name: "Actions",
+    field: "flow_id",
+    formatter: (row, cell, value) => {
+      return `<button class="cancel-btn slick-button" data-id="${value}">Cancel</button>`;
+    },
+    width: 100
+  } 
   ];
 
   createGrid("#running-flow-grid", data, columns);
