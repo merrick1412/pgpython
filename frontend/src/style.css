@@ -94,3 +94,103 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* SlickGrid enhancements */
+.slick-row {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.slick-header-column {
+  background: #f8f8f8;
+  font-weight: bold;
+  border-right: 1px solid #ddd;
+}
+
+.slick-row.even {
+  background-color: #f9f9f9;
+}
+
+/* Optional: styled button inside grid cells */
+.slick-button {
+  border-radius: 6px;
+  padding: 5px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#flow-grid,
+#running-flow-grid {
+  width: 100%;
+  height: 500px;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Ensure grid inner viewport scrolls vertically */
+.slick-viewport {
+  overflow-y: auto !important;
+}
+
+/* SlickGrid fix for dark mode */
+.slick-grid-container,
+.slick-row,
+.slick-cell{
+   display: flex;
+  align-items: center;
+  justify-content: center; /* optional: use left or right if preferred */
+  padding: 0 !important;
+}
+.slick-header-column {
+  background-color: #ffffff !important;
+  color: #000 !important;
+  border-color: #ccc;
+}
+
+/*full-width layout for the whole page */
+body {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .slick-grid-container,
+  .slick-row,
+  .slick-cell,
+  .slick-header-column {
+    background-color: #1e1e1e !important;
+    color: #f0f0f0 !important;
+    border-color: #444;
+  }
+
+  .slick-header-column {
+    background-color: #2a2a2a !important;
+  }
+
+  .slick-button {
+  background-color: #333 !important;
+  color: #f0f0f0 !important;
+  border: 1px solid #666 !important;
+  border-radius: 6px;
+  padding: 3px 12px;
+  line-height: 1;
+  font-size: 13px;
+  cursor: pointer;
+  width: 80%;
+  box-sizing: border-box;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.slick-button:hover {
+  background-color: #444 !important;
+  border-color: #888 !important;
+}
+
+  #search-box {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+  }
+}

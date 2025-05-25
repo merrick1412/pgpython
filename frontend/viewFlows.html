@@ -1,69 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Flow List</title>
-    <style>
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      #graph-output {
-        margin-top: 20px;
-        border: 1px solid #ddd;
-        padding: 10px;
-      }
-    </style>
-<script type="module">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flow List</title>
+
+  <!-- SlickGrid CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.css" />
+
+  <!-- jQuery and SlickGrid scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/lib/jquery.event.drag-2.3.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.core.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.dataview.js"></script>
+  <script>
+  // Hijack and alias to avoid conflict with native JS DataView
+  const dataView = new window.Slick.Data.DataView();
+  </script>
+
+  <!-- Viz.js for embedded graph rendering (if needed) -->
+  <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/viz.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/full.render.js"></script>
+
+  <style>
+    #flow-grid, #running-flow-grid {
+      width: 100%;
+      height: 500px;
+      margin-bottom: 20px;
+    }
+    #graph-output {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  </style>
+  <script type="module">
     document.getElementById("back-btn").addEventListener("click", () => {
         window.history.back();
     });
     </script>
-  </head>
-  <body>
-    <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
-    <h1>All Flows</h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Flow</th>
-          <th>Status</th>
-          <th>Run Time</th>
-          <th>Finished</th>
-          <th>Failed</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="flow-table-body"></tbody>
-    </table>
-    <h1>Running Flows</h1>
-<button id="refresh-running-flows" style="border-radius: 6px; padding: 5px 16px;">Refresh</button>
-<table border="1">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Flow</th>
-      <th>Status</th>
-      <th>Run Time</th>
-      <th>Finished</th>
-      <th>Failed</th>
-    </tr>
-  </thead>
-  <tbody id="running-flow-table-body"></tbody>
-</table>
+</head>
+<body>
+  <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
 
-    <div id="tasks-output"></div>
-    <div id="graph-output"></div>
+  <h1>All Flows</h1>
+  <input id="search-box" type="text" placeholder="Search..." style="margin-bottom: 10px; padding: 5px; width: 200px;" />
+  <div id="flow-grid"></div>
 
-    <script type="module" src="/src/flows.js"></script>
-  </body>
+  <h1>Running Flows</h1>
+  <button id="refresh-running-flows" style="border-radius: 6px; padding: 5px 16px;">Refresh</button>
+  <div id="running-flow-grid"></div>
+
+  <div id="tasks-output"></div>
+  
+
+  <script type="module" src="/src/flows.js"></script>
+</body>
 </html>

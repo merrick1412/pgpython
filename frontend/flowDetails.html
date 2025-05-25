@@ -3,51 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <title>Flow Details</title>
+
+  <!-- SlickGrid CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.css" />
+
+  <!-- jQuery and SlickGrid scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/lib/jquery.event.drag-2.3.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.core.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.dataview.js"></script>
+
+  <!-- Viz.js for Graph -->
+  <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/viz.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/viz.js@2.1.2/full.render.js"></script>
+
   <style>
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      #graph-output {
-        margin-top: 20px;
-        border: 1px solid #ddd;
-        padding: 10px;
-      }
-    </style>
-  <script type="module">
-    document.getElementById("back-btn").addEventListener("click", () => {
-        window.history.back();
-    });
-    import { showTasks, showGraph } from './src/flows.js';
-
-    // Get flow_id from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const flowId = urlParams.get('flow_id');
-
-    if (flowId) {
-      showTasks(flowId).catch(err => {
-        document.getElementById("tasks-output").innerHTML = `<p>Error loading tasks: ${err}</p>`;
-      });
-      showGraph(flowId).catch(err => {
-        document.getElementById("graph-output").innerHTML = `<p>Error loading graph: ${err}</p>`;
-      });
-    } else {
-      document.body.innerHTML = "<p>No flow_id provided in URL.</p>";
+    #tasks-grid {
+      width: 100%;
+      height: 400px;
+      margin-top: 20px;
     }
+    #graph-output {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  </style>
+
+  <script type="module">
+    import { showGraph } from '/src/flows.js';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const backBtn = document.getElementById("back-btn");
+      if (backBtn) {
+        backBtn.addEventListener("click", () => {
+          window.history.back();
+        });
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const flowId = urlParams.get('flow_id');
+
+      if (flowId) {
+        loadTasks(flowId).catch(err => {
+          document.getElementById("tasks-grid").innerHTML = `<p>Error loading tasks: ${err}</p>`;
+        });
+        showGraph(flowId).catch(err => {
+          document.getElementById("graph-output").innerHTML = `<p>Error loading graph: ${err}</p>`;
+        });
+      } else {
+        document.body.innerHTML = "<p>No flow_id provided in URL.</p>";
+      }
+
+      async function loadTasks(flowId) {
+        const res = await fetch(`/api/flows/${flowId}/tasks`);
+        const tasks = await res.json();
+
+        const columns = [
+          { id: "task_id", name: "Task ID", field: "task_id", width: 80 },
+          { id: "type", name: "Type", field: "type" },
+          { id: "status", name: "Status", field: "status" },
+          { id: "run_time", name: "Run Time", field: "run_time" },
+          { id: "processing_error", name: "Error", field: "processing_error", width: 400 }
+        ];
+
+        const options = {
+          enableCellNavigation: true,
+          enableColumnReorder: false,
+          autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns
+        };
+
+        new Slick.Grid("#tasks-grid", tasks, columns, options);
+      }
+    });
   </script>
 </head>
 <body>
-    <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
+  <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
   <h1>Flow Details</h1>
-  <div id="tasks-output"></div>
+  <div id="tasks-grid"></div>
   <div id="graph-output"></div>
 </body>
 </html>
