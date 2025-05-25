@@ -12,6 +12,7 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
+    "slickgrid": "^5.15.3",
     "viz.js": "^2.1.2"
   }
 }
