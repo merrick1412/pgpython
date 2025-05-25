@@ -11,7 +11,8 @@ function createGrid(containerId, data, columns) {
   const options = {
     enableCellNavigation: true,
     enableColumnReorder: false,
-    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns
+    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns,
+    forceFitColumns: true
   };
 
  
@@ -59,7 +60,7 @@ function createGrid(containerId, data, columns) {
 
   dataView.setFilter(item => {
     if (!searchQuery) return true;
-    return [item.flow, item.id, item.complete].some(val =>
+    return [item.flow, item.id].some(val =>
       String(val).toLowerCase().includes(searchQuery)
     );
   });
@@ -94,7 +95,6 @@ async function loadFlows() {
   const columns = [
     { id: "flow_id", name: "ID", field: "flow_id", width: 60 },
     { id: "flow", name: "Name", field: "flow" },
-    { id: "complete", name: "Status", field: "complete", width: 80 },
     { id: "run_time", name: "Run Time", field: "run_time" },
     { id: "count_finished_nodes", name: "Finished", field: "count_finished_nodes", width: 80 },
     { id: "count_failed_nodes", name: "Failed", field: "count_failed_nodes", width: 80 },
@@ -161,7 +161,7 @@ export async function showGraph(flowId) {
   const svg = await viz.renderString(dot);
 
   const container = document.getElementById("graph-output");
-  container.innerHTML = `<h2>Graph for Flow ${flowId}</h2>${svg}`;
+  container.innerHTML = `<h2>Flow ${flowId}</h2>${svg}`;
 }
 
 async function loadRunningFlows() {
@@ -176,7 +176,6 @@ async function loadRunningFlows() {
   const columns = [
     { id: "flow_id", name: "ID", field: "flow_id", width: 60 },
     { id: "flow", name: "Name", field: "flow" },
-    { id: "complete", name: "Status", field: "complete", width: 80 },
     { id: "run_time", name: "Run Time", field: "run_time" },
     { id: "count_finished_nodes", name: "Finished", field: "count_finished_nodes", width: 80 },
     { id: "count_failed_nodes", name: "Failed", field: "count_failed_nodes", width: 80 },

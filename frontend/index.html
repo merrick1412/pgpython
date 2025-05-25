@@ -4,28 +4,92 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Starting Page</title>
+    <link rel="stylesheet" href="style.css">
     <style>
+      :root {
+        /* Light mode variables for index page */
+        --page-bg: #f8f9fa;
+        --card-bg: white;
+        --card-shadow: rgba(0,0,0,0.08);
+        --text-color: #213547;
+        --button-text-color: #213547;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* Dark mode variables for index page */
+          --page-bg: #1a1a1a;
+          --card-bg: #2a2a2a;
+          --card-shadow: rgba(0,0,0,0.3);
+          --text-color: rgba(255, 255, 255, 0.9);
+          --button-text-color: rgba(255, 255, 255, 0.9);
+        }
+      }
+
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
+
       body {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f8f9fa;
+        background: var(--page-bg);
+        color: var(--text-color);
+        font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
+
       #start {
         text-align: center;
-        background: white;
+        background: var(--card-bg);
         padding: 40px 32px;
         border-radius: 16px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 24px var(--card-shadow);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
       }
-      button {
+
+      #start h1 {
+        margin-top: 0;
+        color: var(--text-color);
+      }
+
+      #start p {
+        color: var(--text-color);
+        opacity: 0.8;
+      }
+
+      .nav-button {
         margin: 8px;
+        border-radius: 6px;
+        padding: 12px 20px;
+        border: 1px solid var(--grid-border-color);
+        background-color: var(--button-bg-color);
+        color: var(--text-color);
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        min-width: 180px;
+      }
+
+      .nav-button:hover {
+        border-color: #646cff;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px var(--card-shadow);
+      }
+
+      .nav-button:active {
+        transform: translateY(0);
+      }
+
+      .nav-button:focus {
+        outline: 2px solid #646cff;
+        outline-offset: 2px;
       }
     </style>
   </head>
@@ -33,22 +97,20 @@
     <div id="start">
       <h1>Welcome to PGFlow</h1>
       <p>Click the buttons below to proceed.</p>
-      <button id="completed-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToViewCompleted()">View Completed Flows</button>
-      <button id="running-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToViewRunning()">View Running Flows</button>
-      <button id="createFlow-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToCreate()">Create Flows</button>
+      <button class="nav-button" onclick="navigateToViewCompleted()">View Completed Flows</button>
+      <button class="nav-button" onclick="navigateToViewRunning()">View Running Flows</button>
+      <button class="nav-button" onclick="navigateToCreate()">Create Flows</button>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script>
       function navigateToViewCompleted() {
         window.location.href = "viewFlows.html";
       }
-    </script>
-    <script>
+
       function navigateToViewRunning() {
         window.location.href = "viewRunningFlows.html";
       }
-    </script>
-    <script>
+
       function navigateToCreate() {
         window.location.href = "createFlows.html";
       }
