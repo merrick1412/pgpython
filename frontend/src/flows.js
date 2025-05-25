@@ -14,22 +14,30 @@ function createGrid(containerId, data, columns) {
     autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns
   };
 
+ 
   setTimeout(() => {
-  document.querySelectorAll(".cancel-btn").forEach(button =>
-    button.addEventListener("click", async e => {
-      const flowId = e.target.dataset.id;
-      if (confirm("Cancel flow " + flowId + "?")) {
-        const resp = await fetch(`/api/flows/${flowId}/cancel`, { method: "POST" });
-        if (resp.ok) {
-          alert("Flow cancelled.");
-          loadRunningFlows();
-        } else {
-          alert("Failed to cancel flow.");
+    document.querySelectorAll(".details-btn").forEach(button =>
+      button.addEventListener("click", e => {
+        const flowId = e.target.dataset.id;
+        window.location.href = `flowDetails.html?flow_id=${flowId}`;
+      })
+    );
+    document.querySelectorAll(".cancel-btn").forEach(button =>
+      button.addEventListener("click", async e => {
+        const flowId = e.target.dataset.id;
+        if (confirm("Cancel flow " + flowId + "?")) {
+          const resp = await fetch(`/api/flows/${flowId}/cancel`, { method: "POST" });
+          if (resp.ok) {
+            alert("Flow cancelled.");
+            loadRunningFlows();
+          } else {
+            alert("Failed to cancel flow.");
+          }
         }
-      }
-    })
-  );
-}, 100);
+      })
+    );
+  }, 100);
+
   
 
   const dataView = new window.Slick.Data.DataView();
@@ -172,15 +180,18 @@ async function loadRunningFlows() {
     { id: "run_time", name: "Run Time", field: "run_time" },
     { id: "count_finished_nodes", name: "Finished", field: "count_finished_nodes", width: 80 },
     { id: "count_failed_nodes", name: "Failed", field: "count_failed_nodes", width: 80 },
-    {
-    id: "actions",
-    name: "Actions",
-    field: "flow_id",
-    formatter: (row, cell, value) => {
-      return `<button class="cancel-btn slick-button" data-id="${value}">Cancel</button>`;
-    },
-    width: 100
-  } 
+     {
+      id: "actions",
+      name: "Actions",
+      field: "flow_id",
+      formatter: (row, cell, value) => {
+        return `
+          <button class="details-btn slick-button" data-id="${value}">Details</button>
+          <button class="cancel-btn slick-button" data-id="${value}">Cancel</button>
+        `;
+      },
+      width: 180
+    }
   ];
 
   createGrid("#running-flow-grid", data, columns);
