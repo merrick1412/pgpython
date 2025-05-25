@@ -33,13 +33,19 @@
     <div id="start">
       <h1>Welcome to PGFlow</h1>
       <p>Click the buttons below to proceed.</p>
-      <button id="start-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToMain()">View Flows</button>
+      <button id="completed-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToViewCompleted()">View Completed Flows</button>
+      <button id="running-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToViewRunning()">View Running Flows</button>
       <button id="createFlow-btn" style="border-radius: 6px; padding: 5px 16px;" onclick="navigateToCreate()">Create Flows</button>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script>
-      function navigateToMain() {
+      function navigateToViewCompleted() {
         window.location.href = "viewFlows.html";
+      }
+    </script>
+    <script>
+      function navigateToViewRunning() {
+        window.location.href = "viewRunningFlows.html";
       }
     </script>
     <script>

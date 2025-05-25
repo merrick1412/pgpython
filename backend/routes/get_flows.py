@@ -7,8 +7,13 @@ def get_flows():
     conn = get_db_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT flow.flows(50);")  # call stored function, displays 50
-        result = cursor.fetchone()
-        return jsonify(result[0])  # unwrap JSONB result
+        cursor.execute("""
+            SELECT * FROM flow.v_flow_status
+            WHERE complete = 'Yes'
+            ORDER BY flow_id DESC
+        """)
+        columns = [desc[0] for desc in cursor.description]
+        results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        return jsonify(results)
     finally:
         conn.close()
