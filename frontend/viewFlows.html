@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Flow List</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      #graph-output {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+    </style>
+<script type="module">
+    document.getElementById("back-btn").addEventListener("click", () => {
+        window.history.back();
+    });
+    </script>
+  </head>
+  <body>
+    <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
+    <h1>All Flows</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Flow</th>
+          <th>Status</th>
+          <th>Run Time</th>
+          <th>Finished</th>
+          <th>Failed</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="flow-table-body"></tbody>
+    </table>
+    <h1>Running Flows</h1>
+<button id="refresh-running-flows" style="border-radius: 6px; padding: 5px 16px;">Refresh</button>
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Flow</th>
+      <th>Status</th>
+      <th>Run Time</th>
+      <th>Finished</th>
+      <th>Failed</th>
+    </tr>
+  </thead>
+  <tbody id="running-flow-table-body"></tbody>
+</table>
+
+    <div id="tasks-output"></div>
+    <div id="graph-output"></div>
+
+    <script type="module" src="/src/flows.js"></script>
+  </body>
+</html>

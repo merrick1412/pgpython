@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flow Details</title>
+  <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      #graph-output {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+    </style>
+  <script type="module">
+    document.getElementById("back-btn").addEventListener("click", () => {
+        window.history.back();
+    });
+    import { showTasks, showGraph } from './src/flows.js';
+
+    // Get flow_id from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const flowId = urlParams.get('flow_id');
+
+    if (flowId) {
+      showTasks(flowId).catch(err => {
+        document.getElementById("tasks-output").innerHTML = `<p>Error loading tasks: ${err}</p>`;
+      });
+      showGraph(flowId).catch(err => {
+        document.getElementById("graph-output").innerHTML = `<p>Error loading graph: ${err}</p>`;
+      });
+    } else {
+      document.body.innerHTML = "<p>No flow_id provided in URL.</p>";
+    }
+  </script>
+</head>
+<body>
+    <button id="back-btn" style="border-radius: 6px; padding: 5px 16px;">Back</button>
+  <h1>Flow Details</h1>
+  <div id="tasks-output"></div>
+  <div id="graph-output"></div>
+</body>
+</html>
