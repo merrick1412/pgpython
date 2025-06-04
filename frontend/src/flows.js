@@ -11,8 +11,8 @@ function createGrid(containerId, data, columns) {
   const options = {
     enableCellNavigation: true,
     enableColumnReorder: false,
-    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns,
-    forceFitColumns: true
+    autosizeColsMode: Slick.GridAutosizeColsMode.FitCols,
+    
   };
 
  

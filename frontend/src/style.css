@@ -1,3 +1,6 @@
+/* ================================
+   Base Variables & Theme
+================================= */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -8,7 +11,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Light mode variables */
   --text-color: #213547;
   --bg-color: #ffffff;
   --link-color: #646cff;
@@ -30,7 +32,6 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark mode variables */
     --text-color: rgba(255, 255, 255, 0.87);
     --bg-color: #242424;
     --link-color: #646cff;
@@ -51,81 +52,105 @@
   }
 }
 
-/* Apply variables to base elements */
-:root {
-  color: var(--text-color);
-  background-color: var(--bg-color);
-}
-
+/* ================================
+   Base Resets
+================================= */
 * {
+  box-sizing: border-box;
   transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
-a {
-  font-weight: 500;
-  color: var(--link-color);
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: var(--link-hover-color);
-}
-
-body {
+html, body {
+  height: 100%;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 2rem;
+  padding: 0;
   background-color: var(--bg-color);
   color: var(--text-color);
+  display: flex;
+  flex-direction: column;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* ================================
+   Header
+================================= */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: transparent;
+}
+
+.dashboard-header h1 {
+  font-size: 2.4rem;
+  margin: 0;
+  flex-grow: 1;
   text-align: center;
-  width: 100%;
-  display: block;
-  color: var(--text-color);
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ================================
+   Main Grid Layout
+================================= */
+main.dashboard-grid {
+  flex-grow: 1;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
-}
-
-.card {
-  padding: 2em;
+/* ================================
+   Themed Sections
+================================= */
+.themed-container {
   background-color: var(--card-bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--grid-border-color);
   border-radius: 8px;
-  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.read-the-docs {
-  color: #888;
+/* ================================
+   Grid & Data Display
+================================= */
+.fill-grid {
+  flex-grow: 1;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
 }
 
+.grid-standard {
+  height: 100%;
+  width: 100%;
+}
+
+.summary-slick {
+  height: 100%;
+  width: 100%;
+}
+
+/* ================================
+   Server Logs
+================================= */
+.log-output {
+  flex-grow: 1;
+  overflow-y: auto;
+  background: #111;
+  color: #ccc;
+  font-family: monospace;
+  padding: 10px;
+  border-radius: 8px;
+  height: 100%;
+}
+
+/* ================================
+   Button Styling
+================================= */
 button {
   border-radius: 8px;
   border: 1px solid var(--button-border-color);
@@ -140,58 +165,29 @@ button {
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: var(--link-color);
   transform: translateY(-1px);
 }
 
 button:focus,
 button:focus-visible {
-  outline: 2px solid #646cff;
+  outline: 2px solid var(--link-color);
   outline-offset: 2px;
 }
 
-button:active {
-  transform: translateY(0);
-}
-
-#details-container {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  width: 100%;
-  margin-top: 20px;
-}
-
-#tasks-grid {
-  flex: 1 1 0;
-  height: 600px;
-  min-width: 0;
-}
-
-#graph-output {
-  flex: 1 1 0;  
-  min-width: 0;
-  padding: 10px;
-  height: auto;
-  overflow: visible;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* SlickGrid unified styles using CSS variables */
+/* ================================
+   SlickGrid Style Integration
+================================= */
 .slick-row {
   font-size: 14px;
-  line-height: 1.4;
   background-color: var(--grid-bg-color) !important;
   color: var(--grid-text-color) !important;
-  border-color: var(--grid-border-color);
   text-align: center;
 }
 
 .slick-cell {
   background-color: var(--grid-bg-color) !important;
   color: var(--grid-text-color) !important;
-  border-color: var(--grid-border-color);
 }
 
 .slick-header-column {
@@ -199,7 +195,6 @@ button:active {
   color: var(--grid-text-color) !important;
   font-weight: bold;
   border-right: 1px solid var(--grid-border-color);
-  border-color: var(--grid-border-color);
 }
 
 .slick-row.even {
@@ -209,64 +204,28 @@ button:active {
 .slick-grid-container {
   background-color: var(--grid-bg-color) !important;
   color: var(--grid-text-color) !important;
-  border-color: var(--grid-border-color);
-}
-
-.slick-button {
-  background-color: var(--button-bg-color) !important;
-  color: var(--button-text-color) !important;
-  border: 1px solid var(--button-border-color) !important;
-  border-radius: 6px;
-  margin: 1 auto;  
-  padding: 3px 12px;
-  line-height: 1;
-  font-size: 13px;
-  cursor: pointer;
-  width: 40%;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.slick-button:hover {
-  opacity: 0.8;
-  transform: translateY(-1px);
-}
-
-#flow-grid,
-#running-flow-grid {
-  width: 100%;
-  height: 500px;
-  max-width: 100%;
-  margin-bottom: 20px;
 }
 
 .slick-viewport {
   overflow-y: auto !important;
 }
 
+
+/* ================================
+   Inputs & Utility
+================================= */
 #search-box {
   background-color: var(--search-bg-color);
   color: var(--search-text-color);
   border: 1px solid var(--search-border-color);
   border-radius: 4px;
   padding: 8px 12px;
-  font-family: inherit;
-  transition: all 0.25s ease;
 }
 
 #search-box:focus {
-  outline: 2px solid #646cff;
+  outline: 2px solid var(--link-color);
   outline-offset: 2px;
-  border-color: #646cff;
-}
-
-/* Additional utility classes for consistent theming */
-.themed-container {
-  background-color: var(--card-bg-color);
-  color: var(--text-color);
-  border: 1px solid var(--grid-border-color);
-  border-radius: 8px;
-  padding: 1rem;
+  border-color: var(--link-color);
 }
 
 .themed-input {
@@ -275,11 +234,57 @@ button:active {
   border: 1px solid var(--search-border-color);
   border-radius: 4px;
   padding: 8px 12px;
-  font-family: inherit;
 }
 
 .themed-input:focus {
-  outline: 2px solid #646cff;
+  outline: 2px solid var(--link-color);
   outline-offset: 2px;
-  border-color: #646cff;
+  border-color: var(--link-color);
+}
+/* ================================
+   Miscellaneous
+================================= */
+.tab-bar {
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--grid-border-color);
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1em;
+  color: var(--text-color);
+}
+
+.tab:hover {
+  background-color: var(--grid-row-even-bg);
+}
+
+.tab.active {
+  border-color: var(--link-color);
+  font-weight: bold;
+}
+
+.tab-content {
+  flex-grow: 1;
+  overflow: hidden;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-panel {
+  display: none;
+  flex-grow: 1;
+  height: 100%;
+  flex-direction: column;
+}
+
+.tab-panel.active {
+  display: flex;
 }

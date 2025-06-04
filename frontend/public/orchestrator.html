@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Orchestrator Dashboard</title>
+
+  <!-- SlickGrid CSS + JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/lib/jquery.event.drag-2.3.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.core.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.dataview.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.js"></script>
+    
+
+  
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header class="dashboard-header">
+    <button id="back-btn">Back</button>
+    <h1>Orchestrator Dashboard</h1>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab active" data-target="tab-summary">System Summary</button>
+    <button class="tab" data-target="tab-workers">Worker Info</button>
+    <button class="tab" data-target="tab-pools">Concurrency Pools</button>
+    <button class="tab" data-target="tab-logs">Server Logs</button>
+  </nav>
+
+  <main class="tab-content">
+    <section id="tab-summary" class="tab-panel active">
+      <div id="summary-grid" class="fill-grid"></div>
+    </section>
+
+    <section id="tab-workers" class="tab-panel">
+      <div id="workers-grid" class="fill-grid"></div>
+    </section>
+
+    <section id="tab-pools" class="tab-panel">
+      <div id="pools-grid" class="fill-grid"></div>
+    </section>
+
+    <section id="tab-logs" class="tab-panel">
+      <pre id="logs-output" class="log-output"></pre>
+    </section>
+  </main>
+
+  <script type="module" src="/src/orchestrator.js"></script>
+</body>
+</html>

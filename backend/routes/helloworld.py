@@ -1,3 +1,4 @@
+""" For testing purposes only."""
 from flask import Blueprint, jsonify
 from backend.db import get_db_connection
 from psycopg2.extras import RealDictCursor
