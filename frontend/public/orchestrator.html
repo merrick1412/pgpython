@@ -3,50 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <title>Orchestrator Dashboard</title>
-
-  <!-- SlickGrid CSS + JS -->
+  <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.css" />
+
+  <!-- SlickGrid + jQuery -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/lib/jquery.event.drag-2.3.0.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.core.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.dataview.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.js"></script>
-    
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/lib/jquery.event.drag-2.3.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.core.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.grid.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slickgrid@2.4.45/slick.dataview.js"></script>
+  <style>
 
-  
+.slick-row,
+.slick-cell {
+  font-size: 1em !important;
+  line-height: 2.2em !important;
+  height: 1.4em !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 
-  <link rel="stylesheet" href="/src/style.css" />
+.slick-header-column {
+  font-size: 1em !important;
+  padding: 10px !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+}
+
+#back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 14px;
+  font-size: 0.9em;
+  border-radius: 6px;
+  border: 1px solid var(--button-border-color);
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+}
+
+/* shared button style */
+.button-style {
+  padding: 6px 14px;
+  font-size: 0.9em;
+  border-radius: 6px;
+  border: 1px solid var(--button-border-color);
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button-style:hover {
+  border-color: var(--link-color);
+  transform: translateY(-1px);
+}
+
+.button-style:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.log-output {
+  width: 100%;
+  max-width: 1280px;
+  height: 80vh;
+  margin: 0 auto;
+  background-color: #111;
+  color: #ccc;
+  font-family: monospace;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-y: scroll;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+    .tab-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 1rem auto;
+  max-width: 800px;
+}
+
+.tab-content {
+  width: 100%;
+  max-width: 1280px;
+}
+
+.tab-panel {
+  display: none;
+  height: 80vh;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+#orchestrator-grid,
+#worker-grid,
+#pool-grid {
+  width: 100%;
+  height: 100%;
+}
+
+  </style>
 </head>
 <body>
-  <header class="dashboard-header">
-    <button id="back-btn">Back</button>
-    <h1>Orchestrator Dashboard</h1>
-  </header>
+  <button id="back-btn">Back</button>
+  <h1 class="page-title">Orchestrator Dashboard</h1>
 
-  <nav class="tab-bar">
-    <button class="tab active" data-target="tab-summary">System Summary</button>
-    <button class="tab" data-target="tab-workers">Worker Info</button>
-    <button class="tab" data-target="tab-pools">Concurrency Pools</button>
-    <button class="tab" data-target="tab-logs">Server Logs</button>
-  </nav>
+  <div class="tab-bar">
+    <button class="tab button-style active" data-tab="summary">System Summary</button>
+    <button class="tab button-style" data-tab="workers">Workers</button>
+    <button class="tab button-style" data-tab="pools">Pools</button>
+    <button class="tab button-style" data-tab="logs">Log</button>
+  </div>
 
-  <main class="tab-content">
-    <section id="tab-summary" class="tab-panel active">
-      <div id="summary-grid" class="fill-grid"></div>
-    </section>
+  <button id="refresh-btn" class="button-style">Refresh</button>
 
-    <section id="tab-workers" class="tab-panel">
-      <div id="workers-grid" class="fill-grid"></div>
-    </section>
+  <div class="tab-content">
+    <div class="tab-panel active" id="summary">
+      <div id="orchestrator-grid" style="width: 100%; height: 1000px;"></div>
+    </div>
 
-    <section id="tab-pools" class="tab-panel">
-      <div id="pools-grid" class="fill-grid"></div>
-    </section>
+    <div class="tab-panel" id="workers">
+      <div id="worker-grid" style="width: 100%; height: 500px;"></div>
+    </div>
 
-    <section id="tab-logs" class="tab-panel">
-      <pre id="logs-output" class="log-output"></pre>
-    </section>
-  </main>
+    <div class="tab-panel" id="pools">
+      <div id="pool-grid" style="width: 100%; height: 500px;"></div>
+    </div>
+
+    <div class="tab-panel" id="logs">
+      <div class="log-output" id="server-log-output"></div>
+    </div>
+  </div>
 
   <script type="module" src="/src/orchestrator.js"></script>
 </body>

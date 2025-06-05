@@ -19,3 +19,5 @@ BEGIN
   );
 END;
 $$ LANGUAGE plpgsql;
+-- This function retrieves information about workers, including their slot, target, task ID,
+-- when they started running, the query they are executing, and their priority.

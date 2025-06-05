@@ -7,12 +7,9 @@ def server_logs():
     conn = get_db_connection()
     try:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        cursor.execute("SELECT async.server_logs(1000) AS data;")
-        row = cursor.fetchone()
-        print("Raw row from server_logs:", row)
-        if row and row['data'] is not None:
-            return jsonify(row['data'])
-        else:
-            return jsonify([])  # Return empty array instead of throwing
+        cursor.execute("SELECT happened, message FROM async.server_logs(1000);")
+        rows = cursor.fetchall()
+        formatted = [f"[{r['happened']}] {r['message']}" for r in reversed(rows)]
+        return jsonify(formatted)
     finally:
         conn.close()

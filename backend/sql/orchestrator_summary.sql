@@ -15,3 +15,5 @@ BEGIN
   RETURN result;
 END;
 $$ LANGUAGE plpgsql;
+-- This function retrieves information about the orchestrator's status, including whether it is up,
+-- its uptime, the last heavy maintenance time, the number of workers, and counts of running and pending tasks.

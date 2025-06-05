@@ -31,7 +31,7 @@ def drop_pg_functions():
 # --- Reload SQL ---
 def load_sql_files():
     config = DB_CONFIG
-    sql_dir = "backend/sql"
+    sql_dir = os.path.join(os.path.dirname(__file__), "backend/sql")
     sql_files = [f for f in os.listdir(sql_dir) if f.endswith(".sql")]
     sql_files.sort()
 
@@ -49,7 +49,8 @@ def load_sql_files():
 
 # --- Run frontend ---
 def run_vite():
-    subprocess.run(["npm", "run", "dev"], cwd="frontend")
+    vite_path = os.path.join(os.path.dirname(__file__), "frontend")
+    subprocess.run(["npm", "run", "dev"], cwd=vite_path, check=True)
 
 # --- Run backend ---
 def run_flask():

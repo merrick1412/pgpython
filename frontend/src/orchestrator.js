@@ -1,5 +1,7 @@
 import './style.css';
 
+const cachedData = {};
+
 function setupGrid(id, data) {
   if (!Array.isArray(data)) {
     console.warn(`Invalid or empty data for grid #${id}:`, data);
@@ -26,21 +28,23 @@ function setupGrid(id, data) {
   const options = {
     enableCellNavigation: true,
     enableColumnReorder: false,
-    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns
+    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns,
   };
 
   const dataView = new Slick.Data.DataView();
   const grid = new Slick.Grid(`#${id}`, dataView, columns, options);
-
   dataView.beginUpdate();
   dataView.setItems(data.map((d, i) => ({ ...d, id: i })), "id");
+  grid.resizeCanvas();
+  grid.autosizeColumns();
   dataView.endUpdate();
 
+  grid.resizeCanvas();
+  grid.autosizeColumns();
   dataView.onRowCountChanged.subscribe(() => {
     grid.updateRowCount();
     grid.render();
   });
-
   dataView.onRowsChanged.subscribe((e, args) => {
     grid.invalidateRows(args.rows);
     grid.render();
@@ -52,7 +56,7 @@ function prettify(key) {
 }
 
 function renderSummary(data) {
-  const fieldLabels = {
+  const labels = {
     is_up: "Status",
     uptime: "Uptime",
     last_heavy_maintenance: "Last Maintenance",
@@ -63,8 +67,8 @@ function renderSummary(data) {
 
   const rows = Object.entries(data).map(([key, value], i) => ({
     id: i,
-    field: fieldLabels[key] || prettify(key),
-    value: value
+    field: labels[key] || prettify(key),
+    value
   }));
 
   const columns = [
@@ -75,49 +79,112 @@ function renderSummary(data) {
   const options = {
     enableCellNavigation: false,
     enableColumnReorder: false,
-    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns
+    autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns,
   };
 
-  const grid = new Slick.Grid("#summary-grid", rows, columns, options);
+  const grid = new Slick.Grid("#orchestrator-grid", rows, columns, options);
+  grid.resizeCanvas();
+  grid.autosizeColumns();
 }
 
-function fetchAndDisplay(endpoint, handler) {
+function fetchOnce(key, endpoint, renderFn) {
+  if (cachedData[key]) {
+    renderFn(cachedData[key]);
+    return;
+  }
+
   fetch(endpoint)
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
+    .then(res => res.json())
+    .then(data => {
+      cachedData[key] = data;
+      renderFn(data);
     })
-    .then(handler)
     .catch(err => {
       console.error(`Error fetching ${endpoint}:`, err);
-      const tabId = endpoint.includes("orchestrator") ? "tab-summary"
-                  : endpoint.includes("worker") ? "tab-workers"
-                  : endpoint.includes("pool") ? "tab-pools"
-                  : "tab-logs";
-      document.getElementById(tabId).innerHTML += `<p class="error">Error loading ${endpoint}</p>`;
+      document.getElementById(`${key}-grid`)?.insertAdjacentHTML('beforeend', `<p class="error">Error loading data</p>`);
     });
 }
 
+function renderLogs() {
+  if (cachedData.logs) {
+    renderLogOutput(cachedData.logs);
+    return;
+  }
+
+  fetch("/server-logs")
+    .then(res => res.json())
+    .then(data => {
+      cachedData.logs = Array.isArray(data) ? data : data?.data || [];
+      renderLogOutput(cachedData.logs);
+    })
+    .catch(err => {
+      document.getElementById("server-log-output").textContent = "Error loading logs";
+      console.error("Log fetch error:", err);
+    });
+}
+
+function renderLogOutput(lines) {
+  const logEl = document.getElementById("server-log-output");
+  logEl.textContent = lines.join("\n");
+  logEl.scrollTop = logEl.scrollHeight; // Auto-scroll to bottom
+}
+
+// Navigation
 document.getElementById("back-btn").addEventListener("click", () => {
   window.history.back();
 });
 
-fetchAndDisplay("/orchestrator-info", renderSummary);
-fetchAndDisplay("/worker-info", data => setupGrid("workers-grid", data?.data || data));
-fetchAndDisplay("/pool-info", data => setupGrid("pools-grid", data));
-fetchAndDisplay("/server-logs", data => {
-  if (Array.isArray(data)) {
-    document.getElementById("logs-output").textContent = data.join("\n");
-  } else {
-    document.getElementById("logs-output").textContent = "No logs available.";
-  }
+// Tabs
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    const selected = tab.dataset.tab;
+
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+
+    tab.classList.add("active");
+    document.getElementById(selected).classList.add("active");
+
+    switch (selected) {
+      case "summary":
+        fetchOnce("summary", "/orchestrator-info", renderSummary);
+        break;
+      case "workers":
+        fetchOnce("workers", "/worker-info", data => setupGrid("worker-grid", data?.data || data));
+        break;
+      case "pools":
+        fetchOnce("pools", "/pool-info", data => setupGrid("pool-grid", data));
+        break;
+      case "logs":
+        renderLogs();
+        break;
+    }
+  });
 });
 
-document.querySelectorAll(".tab").forEach(btn =>
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.target).classList.add("active");
-  })
-);
+// Initial tab load
+fetchOnce("summary", "/orchestrator-info", renderSummary);
+
+document.getElementById("refresh-btn").addEventListener("click", () => {
+  const activeTab = document.querySelector(".tab.active").dataset.tab;
+  if (activeTab === "summary") {
+    fetchAndDisplay("/orchestrator-info", renderSummary);
+  } else if (activeTab === "workers") {
+    fetchAndDisplay("/worker-info", data => setupGrid("worker-grid", data?.data || data));
+  } else if (activeTab === "pools") {
+    fetchAndDisplay("/pool-info", data => setupGrid("pool-grid", data));
+  } else if (activeTab === "logs") {
+    fetch("/server-logs")
+      .then(res => res.json())
+      .then(data => {
+        const out = Array.isArray(data) ? data : (data?.data || []);
+        const logBox = document.getElementById("server-log-output");
+        logBox.textContent = out.join("\n");
+        logBox.scrollTop = logBox.scrollHeight;
+      })
+      .catch(err => {
+        document.getElementById("server-log-output").textContent = "Error loading logs";
+        console.error("Fetch logs error:", err);
+      });
+  }
+});

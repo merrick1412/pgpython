@@ -1,11 +1,10 @@
-/* ================================
-   Base Variables & Theme
-================================= */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,142 +51,49 @@
   }
 }
 
-/* ================================
-   Base Resets
-================================= */
-* {
-  box-sizing: border-box;
-  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-}
-
-html, body {
-  height: 100%;
+body {
   margin: 0;
-  padding: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
   background-color: var(--bg-color);
   color: var(--text-color);
-  display: flex;
-  flex-direction: column;
 }
 
-/* ================================
-   Header
-================================= */
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: transparent;
-}
-
-.dashboard-header h1 {
-  font-size: 2.4rem;
-  margin: 0;
-  flex-grow: 1;
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
   text-align: center;
-}
-
-/* ================================
-   Main Grid Layout
-================================= */
-main.dashboard-grid {
-  flex-grow: 1;
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  gap: 16px;
-  padding: 16px;
-  overflow: hidden;
-}
-
-/* ================================
-   Themed Sections
-================================= */
-.themed-container {
-  background-color: var(--card-bg-color);
+  width: 100%;
+  display: block;
   color: var(--text-color);
-  border: 1px solid var(--grid-border-color);
-  border-radius: 8px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 }
 
-/* ================================
-   Grid & Data Display
-================================= */
-.fill-grid {
-  flex-grow: 1;
-  height: 100%;
-  min-height: 0;
+#flow-grid,
+#running-flow-grid {
   width: 100%;
+  height: 500px;
+  max-width: 100%;
+  margin-bottom: 20px;
 }
 
-.grid-standard {
-  height: 100%;
-  width: 100%;
-}
-
-.summary-slick {
-  height: 100%;
-  width: 100%;
-}
-
-/* ================================
-   Server Logs
-================================= */
-.log-output {
-  flex-grow: 1;
-  overflow-y: auto;
-  background: #111;
-  color: #ccc;
-  font-family: monospace;
-  padding: 10px;
-  border-radius: 8px;
-  height: 100%;
-}
-
-/* ================================
-   Button Styling
-================================= */
-button {
-  border-radius: 8px;
-  border: 1px solid var(--button-border-color);
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: var(--button-bg-color);
-  color: var(--button-text-color);
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-button:hover {
-  border-color: var(--link-color);
-  transform: translateY(-1px);
-}
-
-button:focus,
-button:focus-visible {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
-}
-
-/* ================================
-   SlickGrid Style Integration
-================================= */
 .slick-row {
   font-size: 14px;
+  line-height: 1.4;
   background-color: var(--grid-bg-color) !important;
   color: var(--grid-text-color) !important;
+  border-color: var(--grid-border-color);
   text-align: center;
 }
 
 .slick-cell {
   background-color: var(--grid-bg-color) !important;
   color: var(--grid-text-color) !important;
+  border-color: var(--grid-border-color);
 }
 
 .slick-header-column {
@@ -204,87 +110,53 @@ button:focus-visible {
 .slick-grid-container {
   background-color: var(--grid-bg-color) !important;
   color: var(--grid-text-color) !important;
+  border-color: var(--grid-border-color);
 }
 
 .slick-viewport {
   overflow-y: auto !important;
 }
 
-
-/* ================================
-   Inputs & Utility
-================================= */
-#search-box {
-  background-color: var(--search-bg-color);
-  color: var(--search-text-color);
-  border: 1px solid var(--search-border-color);
-  border-radius: 4px;
-  padding: 8px 12px;
-}
-
-#search-box:focus {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
-  border-color: var(--link-color);
-}
-
-.themed-input {
-  background-color: var(--search-bg-color);
-  color: var(--search-text-color);
-  border: 1px solid var(--search-border-color);
-  border-radius: 4px;
-  padding: 8px 12px;
-}
-
-.themed-input:focus {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
-  border-color: var(--link-color);
-}
-/* ================================
-   Miscellaneous
-================================= */
-.tab-bar {
-  display: flex;
-  justify-content: center;
-  background-color: var(--bg-color);
-  border-bottom: 1px solid var(--grid-border-color);
-}
-
-.tab {
-  padding: 10px 20px;
+.slick-button {
+  background-color: var(--button-bg-color) !important;
+  color: var(--button-text-color) !important;
+  border: 1px solid var(--button-border-color) !important;
+  border-radius: 6px;
+  padding: 3px 12px;
+  font-size: 13px;
   cursor: pointer;
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  font-size: 1em;
-  color: var(--text-color);
+  width: 80%;
+  box-sizing: border-box;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.tab:hover {
-  background-color: var(--grid-row-even-bg);
+.slick-button:hover {
+  background-color: #444 !important;
+  border-color: #888 !important;
 }
 
-.tab.active {
-  border-color: var(--link-color);
-  font-weight: bold;
-}
+@media (prefers-color-scheme: dark) {
+  .slick-grid-container,
+  .slick-row,
+  .slick-cell,
+  .slick-header-column {
+    background-color: #1e1e1e !important;
+    color: #f0f0f0 !important;
+    border-color: #444;
+  }
 
-.tab-content {
-  flex-grow: 1;
-  overflow: hidden;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
+  .slick-header-column {
+    background-color: #2a2a2a !important;
+  }
 
-.tab-panel {
-  display: none;
-  flex-grow: 1;
-  height: 100%;
-  flex-direction: column;
-}
+  .slick-button {
+    background-color: #333 !important;
+    color: #f0f0f0 !important;
+    border: 1px solid #666 !important;
+  }
 
-.tab-panel.active {
-  display: flex;
+  .slick-button:hover {
+    background-color: #444 !important;
+    border-color: #888 !important;
+  }
 }
