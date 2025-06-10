@@ -97,9 +97,10 @@
     <div id="start">
       <h1>Welcome to PGFlow</h1>
       <p>Click the buttons below to proceed.</p>
-      <button class="nav-button" onclick="navigateToViewCompleted()">View Completed Flows</button>
-      <button class="nav-button" onclick="navigateToViewRunning()">View Running Flows</button>
+      <button class="nav-button" onclick="navigateToViewCompleted()">Completed Flows</button>
+      <button class="nav-button" onclick="navigateToViewRunning()">Running Flows</button>
       <button class="nav-button" onclick="navigateToCreate()">Create Flows</button>
+      <button class="nav-button" onclick="navigateToOrchestrator()">Orchestrator Dashboard</button>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script>
@@ -113,6 +114,9 @@
 
       function navigateToCreate() {
         window.location.href = "createFlows.html";
+      }
+      function navigateToOrchestrator() {
+        window.location.href = "orchestrator.html";
       }
     </script>
   </body>

@@ -8,6 +8,10 @@ about the workers and a quick view of potential bottlenecks? hard to say.
 also for the log, some filtering would be a good idea, like a way to filter it to show all the logs between certain times, like show all logs between 12 am to 6 pm. after that, orchestrator dashboard should be done.
 also, havent given it a button on the main page yet. to check out the orch page just change the url to have /orchestrator.html
 
+
+add levels to log
+add more filtering to log
+
 Next week todo:
 flow configurator,
 more information about the orchestrator? not sure what else would be needed

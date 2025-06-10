@@ -51,7 +51,7 @@ function setupGrid(id, data) {
   });
 }
 
-function prettify(key) {
+function prettify(key) { 
   return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 }
 
@@ -65,20 +65,39 @@ function renderSummary(data) {
     tasks_pending: "Pending Tasks"
   };
 
-  const rows = Object.entries(data).map(([key, value], i) => ({
-    id: i,
-    field: labels[key] || prettify(key),
-    value
-  }));
+    const rows = Object.entries(data).map(([key, value], i) => {
+    let displayValue = value;
+    if (key === "is_up") {
+      displayValue = value ? "Online" : "Offline";
+    }
+
+    return {
+      id: i,
+      field: labels[key] || prettify(key),
+      value: displayValue
+    };
+  });
 
   const columns = [
     { id: "field", name: "Metric", field: "field" },
-    { id: "value", name: "Value", field: "value" }
+    {
+    id: "value",
+    name: "Value",
+    field: "value",
+    formatter: (row, cell, value, columnDef, dataContext) => {
+      if (dataContext.field === "Status") {
+        const color = value === "Online" ? "green" : "red";
+        return `<span style="color: ${color}; font-weight: bold;">${value}</span>`;
+      }
+      return value;
+    }
+  }
   ];
 
   const options = {
     enableCellNavigation: false,
     enableColumnReorder: false,
+    enableTextSelectionOnCells: true,
     autosizeColsMode: Slick.GridAutosizeColsMode.FitColumns,
   };
 
@@ -175,16 +194,20 @@ document.getElementById("refresh-btn").addEventListener("click", () => {
     fetchAndDisplay("/pool-info", data => setupGrid("pool-grid", data));
   } else if (activeTab === "logs") {
     fetch("/server-logs")
-      .then(res => res.json())
-      .then(data => {
-        const out = Array.isArray(data) ? data : (data?.data || []);
-        const logBox = document.getElementById("server-log-output");
-        logBox.textContent = out.join("\n");
-        logBox.scrollTop = logBox.scrollHeight;
-      })
-      .catch(err => {
-        document.getElementById("server-log-output").textContent = "Error loading logs";
-        console.error("Fetch logs error:", err);
-      });
+  .then(res => res.json())
+  .then(data => {
+    const rows = Array.isArray(data) ? data : (data?.data || []);
+    const logBox = document.getElementById("server-log-output");
+
+    logBox.textContent = rows
+      .map(row => `[${row.happened}] [${row.level}] ${row.message}`)
+      .join("\n");
+
+    logBox.scrollTop = logBox.scrollHeight;
+  })
+  .catch(err => {
+    document.getElementById("server-log-output").textContent = "Error loading logs";
+    console.error("Fetch logs error:", err);
+  });
   }
 });
